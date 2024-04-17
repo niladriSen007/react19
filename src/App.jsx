@@ -1,68 +1,50 @@
-// import { useEffect, useState } from "react";
-// export function App() {
-//   const [joke, setJoke] = useState("");
-//   const [loading, setLoading] = useState(false);
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 
-//   const fetchJokes = async () => {
-//     try {
-//       setLoading(true);
-//       const res = await fetch("https://api.chucknorris.io/jokes/random");
-//       const data = await res.json();
-//       setJoke(data?.value);
-//     } catch (error) {
-//       console.log(error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+import { Suspense, use, useState } from "react";
 
-//   useEffect(() => {
-//     fetchJokes();
-//   }, []);
-
-//   return (
-//     <div className="flex flex-col items-center justify-center w-full h-screen gap-4 px-64 text-white bg-gradient-to-br from-slate-900 to-blue-600">
-//       <h1 className="text-4xl font-black">Chuck Norris Jokes</h1>
-//       {loading ? (
-//         <h1 className="p-2">Loading...</h1>
-//       ) : (
-//         <p className="p-2 px-6 font-semibold bg-green-600 rounded-md">{joke}</p>
-//       )}
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
-import { Suspense, use } from "react";
-
-const fetchJokes = async () => {
-  const res = await fetch("https://api.chucknorris.io/jokes/random");
-  return res.json();
-};
-
-const JokeItem = () => {
-  const joke = use(fetchJokes());
+const MessageContainer = ({ message }) => {
+  const Message = use(message);
 
   return (
-    <div className="p-2 px-6 font-semibold bg-green-600 rounded-md">
-      <h1>{joke?.value}</h1>
-    </div>
+    <Suspense fallback={<>Loading...</>}>
+      <div className="p-2 px-6 font-semibold bg-green-600 rounded-md">
+        <p>{Message}</p>
+      </div>
+    </Suspense>
   );
 };
 
+const fetchMessage = async () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("🚀");
+    }, 1000);
+  });
+};
+
 export const App = () => {
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState();
+
+  const downloadMessage = async () => {
+    setMessage(fetchMessage());
+    setShow(true);
+  };
+
   return (
     <Suspense fallback={<>Loading...</>}>
       <div className="flex flex-col items-center justify-center w-full h-screen gap-4 px-64 text-white bg-gradient-to-br from-slate-900 to-blue-600">
-        <h1>Chuck Norris Jokes</h1>
-
-        <JokeItem />
+        {show ? (
+          <MessageContainer message={message} />
+        ) : (
+          <button
+            onClick={downloadMessage}
+            className="px-4 py-2 text-white rounded-lg shadow-2xl bg-violet-600 "
+          >
+            Download message
+          </button>
+        )}
       </div>
     </Suspense>
   );
