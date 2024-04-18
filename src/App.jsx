@@ -1,68 +1,32 @@
-// import { useEffect, useState } from "react";
-// export function App() {
-//   const [joke, setJoke] = useState("");
-//   const [loading, setLoading] = useState(false);
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 
-//   const fetchJokes = async () => {
-//     try {
-//       setLoading(true);
-//       const res = await fetch("https://api.chucknorris.io/jokes/random");
-//       const data = await res.json();
-//       setJoke(data?.value);
-//     } catch (error) {
-//       console.log(error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchJokes();
-//   }, []);
-
-//   return (
-//     <div className="flex flex-col items-center justify-center w-full h-screen gap-4 px-64 text-white bg-gradient-to-br from-slate-900 to-blue-600">
-//       <h1 className="text-4xl font-black">Chuck Norris Jokes</h1>
-//       {loading ? (
-//         <h1 className="p-2">Loading...</h1>
-//       ) : (
-//         <p className="p-2 px-6 font-semibold bg-green-600 rounded-md">{joke}</p>
-//       )}
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
-import { Suspense, use } from "react";
-
-const fetchJokes = async () => {
-  const res = await fetch("https://api.chucknorris.io/jokes/random");
-  return res.json();
-};
-
-const JokeItem = () => {
-  const joke = use(fetchJokes());
-
-  return (
-    <div className="p-2 px-6 font-semibold bg-green-600 rounded-md">
-      <h1>{joke?.value}</h1>
-    </div>
-  );
-};
+import { Suspense, use, useState } from "react";
+import { ThemeContext } from "./provider/ThemeProvider";
 
 export const App = () => {
+  const { toggleTheme, setToggleTheme } = use(ThemeContext);
+
   return (
     <Suspense fallback={<>Loading...</>}>
       <div className="flex flex-col items-center justify-center w-full h-screen gap-4 px-64 text-white bg-gradient-to-br from-slate-900 to-blue-600">
-        <h1>Chuck Norris Jokes</h1>
-
-        <JokeItem />
+        <div
+          className={`p-4 rounded-lg ${
+            toggleTheme ? " bg-slate-800 " : "bg-violet-600"
+          }`}
+        >
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus,
+          porro dignissimos nisi ipsam nesciunt quibusdam enim tenetur aliquid
+          sequi tempora, molestias id rem laudantium architecto neque fugiat
+          voluptas beatae cupiditate quod blanditiis dolores. Dignissimos quos
+          dolorem, quas enim dolorum officia.
+        </div>
+        <button
+          onClick={() => setToggleTheme(!toggleTheme)}
+          className="px-4 py-2 bg-green-600 rounded-lg"
+        >
+          Change Theme
+        </button>
       </div>
     </Suspense>
   );
