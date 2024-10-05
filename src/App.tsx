@@ -1,11 +1,10 @@
-import { Suspense } from "react"
-import { Theme } from "./components/Theme"
+import Form from "./components/Form"
 
 const App = () => {
   return (
-    <Suspense>
-      <Theme />
-    </Suspense>
+    <div>
+      <Form />
+    </div>
   )
 }
 export default App
