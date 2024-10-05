@@ -1,46 +1,41 @@
+import FormButton from "./FormButton"
+
 const Form = () => {
 
-  const formAction = (formData : any) => {
-    const userData = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
+  const myAction = async (formData: any) => {
+    await new Promise(r => setTimeout(r, 2000))
+    const newPost = {
+      name: formData.get('name'),
+      email: formData.get('email')
     }
-    console.log(userData)
+    console.log(newPost)
   }
 
   return (
-    <form>
-      <form action={formAction}>
+    <form action={myAction}>
+      <div>
         <label htmlFor="name">Name:</label>
         <input
-          className="border-2 border-black rounded"
+          className="border-2"
           type="text"
           id="name"
           name="name"
-        />{" "}
-        <br />
+          required
+        />
+      </div>
+      <div>
         <label htmlFor="email">Email:</label>
         <input
-          className="border-2 border-black rounded"
+          className="border-2"
           type="email"
           id="email"
           name="email"
-        />{" "}
-        <br />
-        <label htmlFor="password">Password:</label>
-        <input
-          className="border-2 border-black rounded"
-          type="password"
-          id="password"
-          name="password"
+          required
         />
-        <br />
-        <button type="submit" className="bg-black text-white px-4 py-2 mt-3">
-          Submit
-        </button>
-      </form>
+      </div>
+      <FormButton />
     </form>
+
   )
 }
 export default Form
